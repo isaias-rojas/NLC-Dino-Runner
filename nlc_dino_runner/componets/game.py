@@ -1,6 +1,7 @@
-import pygame, sys
+import pygame
 
 
+from nlc_dino_runner.componets.dino import Dino
 from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS
 
 
@@ -15,6 +16,7 @@ class Game :
         self.x_pos_bg = 0
         self.y_pos_bg = 360
         self.game_speed = 20
+        self.player = Dino()
 
 
     def run(self):
@@ -31,13 +33,15 @@ class Game :
                 self.playing = False
 
     def update(self):
-        print('Actualizando')
+        user_input = pygame.key.get_pressed()
+        self.player.update(user_input)
 
     def draw(self):
         self.clock.tick(FPS)
         WHITE = (255, 255, 255)
         self.screen.fill(WHITE)
         self.draw_background()
+        self.player.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
@@ -46,7 +50,7 @@ class Game :
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         #la imagen se mueve
         self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
-        if self.x_pos_bg >= image_width:
+        if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
             self.x_pos_bg = 0
 
