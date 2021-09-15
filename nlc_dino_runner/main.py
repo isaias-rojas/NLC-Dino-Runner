@@ -3,4 +3,4 @@ from nlc_dino_runner.utils import constants
 
 if __name__ == "__main__":
     game = Game()
-    game.run()
+    game.execute()
