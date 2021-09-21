@@ -19,5 +19,3 @@ class Obstacles(Sprite):
     def draw(self, screen):
         screen.blit(self.image[self.obstacle_type], self.rect)
 
-    def events(self):
-        pass
