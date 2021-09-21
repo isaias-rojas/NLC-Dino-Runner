@@ -5,6 +5,7 @@ from nlc_dino_runner.componets.obstacles import text_utils
 from nlc_dino_runner.componets.obstacles.cactus import Cactus
 from nlc_dino_runner.componets.obstacles.obstacles import Obstacles
 from nlc_dino_runner.componets.obstacles.obstaclesManager import ObstaclesManager
+from nlc_dino_runner.componets.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, SMALL_CACTUS, \
     LARGE_CACTUS, RUNNING
 
@@ -27,6 +28,8 @@ class Game:
         self.points = 0
         self.running = True
         self.death_counts = 0
+        self.power_up_manager = PowerUpManager()
+
 
     def execute(self):
         while self.running:
@@ -56,6 +59,7 @@ class Game:
 
     def run(self):
         self.obstacle_manager.reset_obstacles()
+        self.power_up_manager.reset_power_ups(self.points)
         self.points = 0
         self.playing = True
         while self.playing:
@@ -72,6 +76,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
+        self.power_up_manager.update(self.points, self.game_speed, self.player)
 
     def draw(self):
         self.clock.tick(FPS)
@@ -79,6 +84,7 @@ class Game:
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
         self.score()
 
         pygame.display.update()
@@ -86,12 +92,12 @@ class Game:
 
     def score(self):
         self.points += 1
-
         if self.points % 100 == 0:
             self.game_speed += 1
 
         score_element, score_element_rect = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rect)
+
 
     def draw_background(self):
         image_width = BG.get_width()
