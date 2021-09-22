@@ -28,10 +28,14 @@ class ObstaclesManager:
                 if game.player.shield:
                     self.obstacles_list.remove(obstacle)
                 else:
-                    pygame.time.delay(2500)
-                    game.playing = False
-                    game.death_counts += 1
-                    break
+                    game.hearts_manager.hearts_counter -= 1
+                    if game.hearts_manager.hearts_counter > 0:
+                        self.obstacles_list.remove(obstacle)
+                    else:
+                        pygame.time.delay(2500)
+                        game.playing = False
+                        game.death_counts += 1
+                        break
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:
