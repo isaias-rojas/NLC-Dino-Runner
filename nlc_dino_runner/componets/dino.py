@@ -74,7 +74,6 @@ class Dino(Sprite):
             self.step_index = 0
 
     def run(self):
-        #self.image = self.run_img[self.type][0] if self.step_index < 5 else self.run_img[self.type][1]
         self.image = self.run_img[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -99,8 +98,6 @@ class Dino(Sprite):
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
 
-    def draw(self, screen):
-        screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
     def check_invisibility(self, screen):
         if self.shield:
@@ -114,4 +111,6 @@ class Dino(Sprite):
                     text, text_Rect = get_centered_message(f'shield enabled for {time_to_show}', width = 500, height = 40, size = 20)
                     screen.blit(text, text_Rect)
 
+    def draw(self, screen):
+        screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 

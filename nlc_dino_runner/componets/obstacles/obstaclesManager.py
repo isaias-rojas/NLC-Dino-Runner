@@ -27,11 +27,11 @@ class ObstaclesManager:
             if game.player.dino_rect.colliderect(obstacle.rect):
                 if game.player.shield:
                     self.obstacles_list.remove(obstacle)
-
-            pygame.time.delay(2500)
-            game.playing = False
-            game.death_counts += 1
-            break
+                else:
+                    pygame.time.delay(2500)
+                    game.playing = False
+                    game.death_counts += 1
+                    break
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:
