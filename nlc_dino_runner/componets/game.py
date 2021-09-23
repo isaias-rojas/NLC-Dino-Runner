@@ -1,14 +1,14 @@
 import pygame
 
+
 from nlc_dino_runner.componets.dino import Dino
 from nlc_dino_runner.componets.hearts.hearts_manager import HeartsManager
 from nlc_dino_runner.componets.obstacles import text_utils
-from nlc_dino_runner.componets.obstacles.cactus import Cactus
-from nlc_dino_runner.componets.obstacles.obstacles import Obstacles
+from nlc_dino_runner.componets.obstacles.cloud import Cloud
 from nlc_dino_runner.componets.obstacles.obstaclesManager import ObstaclesManager
+from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, FINAL_SCREEN
 from nlc_dino_runner.componets.powerups.power_up_manager import PowerUpManager
-from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, SMALL_CACTUS, \
-    LARGE_CACTUS, RUNNING, FINAL_SCREEN
+
 
 WHITE_COLOR = (255, 255, 255)
 
@@ -18,6 +18,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
+        pygame.mixer.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.playing = False  # no estamos jugando aun cuando se inicializa el juego
@@ -25,6 +26,7 @@ class Game:
         self.y_pos_bg = 360
         self.game_speed = 20
         self.player = Dino()
+        self.cloud = Cloud()
         self.obstacle_manager = ObstaclesManager()
         self.power_up_manager = PowerUpManager()
         self.hearts_manager = HeartsManager()
@@ -40,6 +42,7 @@ class Game:
     def show_menu(self):
         self.running = True
         self.screen.fill(WHITE_COLOR)
+
         if self.death_counts == 0:
             self.print_menu_elements(True)
         elif self.death_counts > 0:
@@ -61,9 +64,11 @@ class Game:
 
     def run(self):
         self.obstacle_manager.reset_obstacles()
-        self.power_up_manager.reset_power_ups(self.points)
+
         self.hearts_manager.reset_counter_hearts()
         self.points = 0
+        self.power_up_manager.reset_power_ups(self.points, self.player)
+        self.game_speed = 20
         self.playing = True
         while self.playing:
             self.event()
@@ -78,20 +83,22 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
+        self.cloud.update(self)
         self.obstacle_manager.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player)
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill(WHITE_COLOR)
-
         self.draw_background()
-        self.hearts_manager.draw(self.screen)
+        self.cloud.draw(self.screen)
+        if self.player.hammer:
+            self.power_up_manager.draw_hammers_remains(self.screen, self.player)
         self.score()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
-
+        self.hearts_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
@@ -107,7 +114,6 @@ class Game:
     def draw_background(self):
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
-        # la imagen se mueve
         self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
