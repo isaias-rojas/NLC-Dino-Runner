@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
-from nlc_dino_runner.componets.powerups import hammer
+from nlc_dino_runner.componets.powerups.hammer import Hammer
 from nlc_dino_runner.utils.constants import (
     RUNNING,
     DUCKING,

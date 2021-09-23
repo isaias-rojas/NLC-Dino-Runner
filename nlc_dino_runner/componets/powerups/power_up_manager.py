@@ -66,17 +66,34 @@ class PowerUpManager:
             self.hammer.set_pos_hammer(player.dino_rect)
             self.hammer.hammer_counter -= 1
 
-            if self.hammer.hammer_counter == 0:
-                player.type = DEFAULT_TYPE
-                self.hammer.reset()
-
         if self.throwing_hammer:
             self.hammer.update_hammer(game_speed, self)
 
+    def get_hammer(self):
+        return self.hammer
 
-    def draw(self, screen):
+    def check_hammer(self, screen, player):
+        if self.hammer:
+            print("x")
+            if self.hammer.hammer_counter == 0:
+                player.type = DEFAULT_TYPE
+                self.hammer.reset()
+                player.hammer = False
+            else:
+                if player.show_text:
+                    text, text_rect = get_centered_message(
+                        f'Hammers remain: {self.hammer.hammer_counter}',
+                        width=500,
+                        height=40,
+                        size=20
+                    )
+                    screen.blit(text, text_rect)
+
+    def draw(self, screen, player):
         for power_up in self.power_ups:
             power_up.draw(screen)
 
+    def draw_hammers_remains(self, screen, player):
         if self.throwing_hammer:
             self.hammer.draw_hammer(screen)
+            self.check_hammer(screen, player)

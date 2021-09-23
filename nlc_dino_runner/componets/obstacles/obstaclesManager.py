@@ -52,4 +52,3 @@ class ObstaclesManager:
 
     def reset_obstacles(self):
         self.obstacles_list = []
-
