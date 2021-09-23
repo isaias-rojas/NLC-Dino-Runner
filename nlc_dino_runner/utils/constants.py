@@ -22,6 +22,7 @@ SCORE_SOUND = pygame.mixer.Sound(os.path.join(SOUND_DIR, "sound_score.ogg"))
 COLLIDE_SOUND = pygame.mixer.Sound(os.path.join(SOUND_DIR, "smb_stomp.wav"))
 HAMMER_SOUND = pygame.mixer.Sound(os.path.join(SOUND_DIR, "smb_bump.wav"))
 LOST_LIFE = pygame.mixer.Sound(os.path.join(SOUND_DIR, "smb_lostlife.wav"))
+EXTRA_LIFE = pygame.mixer.Sound(os.path.join(SOUND_DIR, "smb_1-up.wav"))
 # Assets Constants
 ICON = pygame.image.load(os.path.join(IMG_DIR, "DinoWallpaper.png"))
 
@@ -79,6 +80,8 @@ BIRD = [
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
+FIREBALL = pygame.image.load(os.path.join(IMG_DIR, 'Other/orange_fireball.png'))
+LIFE = pygame.image.load(os.path.join(IMG_DIR, 'Other/Heart.png'))
 
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 

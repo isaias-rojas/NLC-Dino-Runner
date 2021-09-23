@@ -85,7 +85,7 @@ class Game:
         self.player.update(user_input)
         self.cloud.update(self)
         self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points, self.game_speed, self.player)
+        self.power_up_manager.update(self.points, self.game_speed, self.player, self.hearts_manager)
 
     def draw(self):
         self.clock.tick(FPS)

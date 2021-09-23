@@ -3,8 +3,10 @@ import pygame
 
 from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
 from nlc_dino_runner.componets.powerups.hammer import Hammer
+from nlc_dino_runner.componets.powerups.life import Life
 from nlc_dino_runner.componets.powerups.shield import Shield
-from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE, POWER_UP_SOUND, HAMMER_SOUND
+from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE, POWER_UP_SOUND, HAMMER_SOUND, \
+    EXTRA_LIFE
 
 
 class PowerUpManager:
@@ -32,9 +34,9 @@ class PowerUpManager:
                 print("generating power")
                 self.when_appears = random.randint(self.when_appears + 200, 500 + self.when_appears)
                 if player.type == DEFAULT_TYPE:
-                    self.power_ups.append(random.choice([Shield(), Hammer()]))
+                    self.power_ups.append(random.choice([Shield(), Hammer(), Life()]))
 
-    def update(self, points, game_speed, player):
+    def update(self, points, game_speed, player, heart_manager):
         self.generate_power_ups(points, player)
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)
@@ -59,10 +61,16 @@ class PowerUpManager:
                     player.hammer = True
                     player.type = power_up.type
                     self.hammer.hammer_counter = 5
+                if isinstance(power_up, Life):
+                    self.power_ups.remove(power_up)
+                    print("tilling")
+                    pygame.mixer.Sound.play(EXTRA_LIFE)
+                    heart_manager.hearts_counter += 1
 
         user_input = pygame.key.get_pressed()
 
-        if user_input[pygame.K_SPACE] and player.hammer and not self.throwing_hammer and self.hammer.hammer_counter >= 0:
+        if user_input[
+            pygame.K_SPACE] and player.hammer and not self.throwing_hammer and self.hammer.hammer_counter >= 0:
             pygame.mixer.Sound.play(HAMMER_SOUND)
             self.throwing_hammer = True
             self.hammer.set_pos_hammer(player.dino_rect)
