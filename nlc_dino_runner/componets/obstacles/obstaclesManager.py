@@ -4,7 +4,7 @@ import pygame
 
 from nlc_dino_runner.componets.obstacles.bird import Bird
 from nlc_dino_runner.componets.obstacles.cactus import Cactus
-from nlc_dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD
+from nlc_dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD, GAME_OVER_SOUND, COLLIDE_SOUND, LOST_LIFE
 
 
 class ObstaclesManager:
@@ -34,14 +34,16 @@ class ObstaclesManager:
             if game.player.dino_rect.colliderect(obstacle.rect):
                 if game.player.dino_rect.colliderect(obstacle.rect):
                     if game.player.shield:
+                        pygame.mixer.Sound.play(COLLIDE_SOUND)
                         self.obstacles_list.remove(obstacle)
                     else:
+                        pygame.mixer.Sound.play(LOST_LIFE)
                         game.hearts_manager.hearts_counter -= 1
                         if game.hearts_manager.hearts_counter > 0:
                             self.obstacles_list.remove(obstacle)
                         else:
                             pygame.time.delay(2500)
-
+                            pygame.mixer.Sound.play(GAME_OVER_SOUND)
                             game.playing = False
                             game.death_counts += 1
                             break

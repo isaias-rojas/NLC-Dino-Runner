@@ -4,7 +4,7 @@ import pygame
 from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
 from nlc_dino_runner.componets.powerups.hammer import Hammer
 from nlc_dino_runner.componets.powerups.shield import Shield
-from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE
+from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE, POWER_UP_SOUND, HAMMER_SOUND
 
 
 class PowerUpManager:
@@ -39,6 +39,7 @@ class PowerUpManager:
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)
             if player.dino_rect.colliderect(power_up.rect):
+                pygame.mixer.Sound.play(POWER_UP_SOUND)
                 player.type = power_up.type
                 if power_up.type == SHIELD_TYPE:
                     print("sss")
@@ -61,7 +62,8 @@ class PowerUpManager:
 
         user_input = pygame.key.get_pressed()
 
-        if user_input[pygame.K_SPACE] and player.hammer and not self.throwing_hammer and self.hammer.hammer_counter > 0:
+        if user_input[pygame.K_SPACE] and player.hammer and not self.throwing_hammer and self.hammer.hammer_counter >= 0:
+            pygame.mixer.Sound.play(HAMMER_SOUND)
             self.throwing_hammer = True
             self.hammer.set_pos_hammer(player.dino_rect)
             self.hammer.hammer_counter -= 1
@@ -74,7 +76,6 @@ class PowerUpManager:
 
     def check_hammer(self, screen, player):
         if self.hammer:
-            print("x")
             if self.hammer.hammer_counter == 0:
                 player.type = DEFAULT_TYPE
                 self.hammer.reset()
@@ -87,9 +88,10 @@ class PowerUpManager:
                         height=40,
                         size=20
                     )
+                    print("x")
                     screen.blit(text, text_rect)
 
-    def draw(self, screen, player):
+    def draw(self, screen):
         for power_up in self.power_ups:
             power_up.draw(screen)
 

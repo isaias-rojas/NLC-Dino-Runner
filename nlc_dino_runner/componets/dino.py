@@ -1,7 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
 from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
-from nlc_dino_runner.componets.powerups.hammer import Hammer
 from nlc_dino_runner.utils.constants import (
     RUNNING,
     DUCKING,
@@ -13,7 +12,7 @@ from nlc_dino_runner.utils.constants import (
     DUCKING_HAMMER,
     DEFAULT_TYPE,
     SHIELD_TYPE,
-    HAMMER_TYPE, JUMPING_HAMMER)
+    HAMMER_TYPE, JUMPING_HAMMER, JUMP_SOUND, DUCK_SOUND)
 
 
 class Dino(Sprite):
@@ -23,6 +22,8 @@ class Dino(Sprite):
     JUMP_VEL = 8.5
 
     def __init__(self):
+        pygame.font.init()
+        pygame.mixer.init()
         self.run_img = {
             DEFAULT_TYPE: RUNNING,
             SHIELD_TYPE: RUNNING_SHIELD,
@@ -67,10 +68,12 @@ class Dino(Sprite):
             self.dino_duck = True
             self.dino_jump = False
             self.dino_run = False
+            pygame.mixer.Sound.play(DUCK_SOUND)
         elif user_input[pygame.K_UP] and not self.dino_jump:
             self.dino_jump = True
             self.dino_duck = False
             self.dino_run = False
+            pygame.mixer.Sound.play(JUMP_SOUND)
         elif not self.dino_jump:
             self.dino_run = True
             self.dino_duck = False
@@ -116,8 +119,6 @@ class Dino(Sprite):
                     text, text_rect = get_centered_message(f'shield enabled for {time_to_show}', width=500, height=40,
                                                            size=20)
                     screen.blit(text, text_rect)
-
-
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
