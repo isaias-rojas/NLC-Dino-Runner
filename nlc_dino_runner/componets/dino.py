@@ -1,8 +1,9 @@
 import pygame
 
 from pygame.sprite import Sprite
-from nlc_dino_runner.componets.obstacles import text_utils
+from nlc_dino_runner.componets.game import Game
 from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
+from nlc_dino_runner.componets.powerups.hammer import Hammer
 from nlc_dino_runner.utils.constants import (
     RUNNING,
     DUCKING,
@@ -10,8 +11,11 @@ from nlc_dino_runner.utils.constants import (
     RUNNING_SHIELD,
     DUCKING_SHIELD,
     JUMPING_SHIELD,
+    RUNNING_HAMMER,
+    DUCKING_HAMMER,
     DEFAULT_TYPE,
-    SHIELD_TYPE)
+    SHIELD_TYPE,
+    HAMMER_TYPE, JUMPING_HAMMER)
 
 
 class Dino(Sprite):
@@ -23,15 +27,18 @@ class Dino(Sprite):
     def __init__(self):
         self.run_img = {
             DEFAULT_TYPE: RUNNING,
-            SHIELD_TYPE: RUNNING_SHIELD
+            SHIELD_TYPE: RUNNING_SHIELD,
+            HAMMER_TYPE: RUNNING_HAMMER
         }
         self.jump_img = {
             DEFAULT_TYPE: JUMPING,
-            SHIELD_TYPE: JUMPING_SHIELD
+            SHIELD_TYPE: JUMPING_SHIELD,
+            HAMMER_TYPE: JUMPING_HAMMER
         }
         self.duck_img = {
             DEFAULT_TYPE: DUCKING,
-            SHIELD_TYPE: DUCKING_SHIELD
+            SHIELD_TYPE: DUCKING_SHIELD,
+            HAMMER_TYPE: DUCKING_HAMMER
         }
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
@@ -39,7 +46,8 @@ class Dino(Sprite):
         self.shield = False
         self.shield_time_up = 0
         self.show_text = False
-
+        self.hammers = Hammer()
+        self.hammer = False
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
@@ -69,6 +77,9 @@ class Dino(Sprite):
             self.dino_run = True
             self.dino_duck = False
             self.dino_jump = False
+
+        if user_input[pygame.K_SPACE] and self.hammer:
+            pass
 
         if self.step_index >= 10:
             self.step_index = 0
@@ -111,5 +122,13 @@ class Dino(Sprite):
                                                            size=20)
                     screen.blit(text, text_rect)
 
+
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
+
+    def throw_hammer(self, screen):
+        hammer = Hammer()
+        hammer.draw(screen)
+        hammer.update(self)
+
+
