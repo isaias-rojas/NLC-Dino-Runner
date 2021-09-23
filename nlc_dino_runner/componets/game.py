@@ -1,12 +1,14 @@
 import pygame
 
+
 from nlc_dino_runner.componets.dino import Dino
 from nlc_dino_runner.componets.hearts.hearts_manager import HeartsManager
 from nlc_dino_runner.componets.obstacles import text_utils
 from nlc_dino_runner.componets.obstacles.cloud import Cloud
 from nlc_dino_runner.componets.obstacles.obstaclesManager import ObstaclesManager
-from nlc_dino_runner.componets.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, FINAL_SCREEN
+from nlc_dino_runner.componets.powerups.power_up_manager import PowerUpManager
+
 
 WHITE_COLOR = (255, 255, 255)
 
@@ -16,6 +18,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
+        pygame.mixer.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.playing = False  # no estamos jugando aun cuando se inicializa el juego
@@ -61,9 +64,11 @@ class Game:
 
     def run(self):
         self.obstacle_manager.reset_obstacles()
-        self.power_up_manager.reset_power_ups(self.points)
+
         self.hearts_manager.reset_counter_hearts()
         self.points = 0
+        self.power_up_manager.reset_power_ups(self.points, self.player)
+        self.game_speed = 20
         self.playing = True
         while self.playing:
             self.event()
@@ -85,16 +90,13 @@ class Game:
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill(WHITE_COLOR)
-
         self.draw_background()
-
         self.cloud.draw(self.screen)
         self.score()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         self.hearts_manager.draw(self.screen)
-
         pygame.display.update()
         pygame.display.flip()
 
@@ -110,7 +112,6 @@ class Game:
     def draw_background(self):
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
-        # la imagen se mueve
         self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (self.x_pos_bg + image_width, self.y_pos_bg))

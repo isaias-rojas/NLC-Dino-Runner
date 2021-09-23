@@ -3,14 +3,15 @@ from nlc_dino_runner.utils.constants import HEART
 
 
 class Hearts(Sprite):
-    POS_Y = 20
+    POS_Y = 15
 
     def __init__(self, pos_x):
         self.image = HEART
         self.rect = self.image.get_rect()
-        self.rect_x = pos_x
-        self.rect_y = self.POS_Y
+        self.pos_x = pos_x
+        self.rect.x = self.pos_x
+        self.rect.y = self.POS_Y
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 

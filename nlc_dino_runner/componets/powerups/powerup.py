@@ -21,4 +21,6 @@ class PowerUp(Sprite):
         if self.rect.x < -self.rect.width:
             powerups.pop()
 
-
+    def reset(self):
+        self.rect.x = SCREEN_HEIGHT + random.randint(800, 1000)
+        self.rect.y = random.randint(100, 150)

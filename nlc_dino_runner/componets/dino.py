@@ -1,9 +1,7 @@
 import pygame
-
 from pygame.sprite import Sprite
-from nlc_dino_runner.componets.game import Game
 from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
-from nlc_dino_runner.componets.powerups.hammer import Hammer
+from nlc_dino_runner.componets.powerups import hammer
 from nlc_dino_runner.utils.constants import (
     RUNNING,
     DUCKING,
@@ -46,7 +44,7 @@ class Dino(Sprite):
         self.shield = False
         self.shield_time_up = 0
         self.show_text = False
-        self.hammers = Hammer()
+
         self.hammer = False
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -77,9 +75,6 @@ class Dino(Sprite):
             self.dino_run = True
             self.dino_duck = False
             self.dino_jump = False
-
-        if user_input[pygame.K_SPACE] and self.hammer:
-            pass
 
         if self.step_index >= 10:
             self.step_index = 0
@@ -123,12 +118,6 @@ class Dino(Sprite):
                     screen.blit(text, text_rect)
 
 
+
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
-
-    def throw_hammer(self, screen):
-        hammer = Hammer()
-        hammer.draw(screen)
-        hammer.update(self)
-
-
