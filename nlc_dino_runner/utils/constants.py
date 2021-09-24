@@ -2,7 +2,6 @@ import pygame
 import os
 
 pygame.mixer.init()
-
 # Global Constants
 TITLE = 'Dino Runner'
 SCREEN_HEIGHT = 600
@@ -10,7 +9,8 @@ SCREEN_WIDTH = 1100
 FPS = 30
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 HEARTS_COUNTER = 3
-
+print("lol"*100)
+print(__file__)
 ##SOUNDS
 SOUND_DIR = os.path.join(os.path.dirname(__file__), "..", "music_and_sounds")
 JUMP_SOUND = pygame.mixer.Sound(os.path.join(SOUND_DIR, 'sound_jump.ogg'))

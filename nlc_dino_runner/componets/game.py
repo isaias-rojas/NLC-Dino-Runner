@@ -1,6 +1,5 @@
 import pygame
 
-
 from nlc_dino_runner.componets.dino import Dino
 from nlc_dino_runner.componets.hearts.hearts_manager import HeartsManager
 from nlc_dino_runner.componets.obstacles import text_utils
@@ -8,7 +7,6 @@ from nlc_dino_runner.componets.obstacles.cloud import Cloud
 from nlc_dino_runner.componets.obstacles.obstaclesManager import ObstaclesManager
 from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, FINAL_SCREEN
 from nlc_dino_runner.componets.powerups.power_up_manager import PowerUpManager
-
 
 WHITE_COLOR = (255, 255, 255)
 

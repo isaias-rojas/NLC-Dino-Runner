@@ -42,7 +42,7 @@ class ObstaclesManager:
                         if game.hearts_manager.hearts_counter > 0:
                             self.obstacles_list.remove(obstacle)
                         else:
-                            pygame.time.delay(2500)
+                            pygame.time.delay(1000)
                             pygame.mixer.Sound.play(GAME_OVER_SOUND)
                             game.playing = False
                             game.death_counts += 1
