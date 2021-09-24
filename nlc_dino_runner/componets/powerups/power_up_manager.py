@@ -69,8 +69,8 @@ class PowerUpManager:
 
         user_input = pygame.key.get_pressed()
 
-        if user_input[
-            pygame.K_SPACE] and player.hammer and not self.throwing_hammer and self.hammer.hammer_counter >= -1:
+        if (user_input[
+            pygame.K_SPACE] and player.hammer) and (not self.throwing_hammer and self.hammer.hammer_counter > 0):
             pygame.mixer.Sound.play(HAMMER_SOUND)
             self.throwing_hammer = True
             self.hammer.set_pos_hammer(player.dino_rect)
@@ -78,6 +78,8 @@ class PowerUpManager:
 
         if self.throwing_hammer:
             self.hammer.update_hammer(game_speed, self)
+
+
 
     def get_hammer(self):
         return self.hammer
