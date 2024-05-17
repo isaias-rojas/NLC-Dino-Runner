@@ -1,7 +1,7 @@
 import random
 
-from nlc_dino_runner.componets.powerups.powerup import PowerUp
-from nlc_dino_runner.utils.constants import HAMMER, HAMMER_TYPE, SCREEN_WIDTH, SCREEN_HEIGHT
+from componets.powerups.powerup import PowerUp
+from utils.constants import HAMMER, HAMMER_TYPE, SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Hammer(PowerUp):

@@ -2,9 +2,9 @@ import random
 
 import pygame
 
-from nlc_dino_runner.componets.obstacles.bird import Bird
-from nlc_dino_runner.componets.obstacles.cactus import Cactus
-from nlc_dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD, GAME_OVER_SOUND, COLLIDE_SOUND, LOST_LIFE
+from componets.obstacles.bird import Bird
+from componets.obstacles.cactus import Cactus
+from utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD, GAME_OVER_SOUND, COLLIDE_SOUND, LOST_LIFE
 
 
 class ObstaclesManager:
@@ -12,7 +12,7 @@ class ObstaclesManager:
     def __init__(self):
         self.obstacles_list = []
 
-    def update(self, game):
+    def update(self, game, joystick=None):
         num_aux = random.randint(0, 2)
         if len(self.obstacles_list) == 0:
             if num_aux == 0:
@@ -39,6 +39,10 @@ class ObstaclesManager:
                     else:
                         pygame.mixer.Sound.play(LOST_LIFE)
                         game.hearts_manager.hearts_counter -= 1
+
+                        if joystick:
+                            joystick.rumble(1.0, 1.0, 500)
+
                         if game.hearts_manager.hearts_counter > 0:
                             self.obstacles_list.remove(obstacle)
                         else:

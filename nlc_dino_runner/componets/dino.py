@@ -1,7 +1,9 @@
 import pygame
+import pygame.joystick
+
 from pygame.sprite import Sprite
-from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
-from nlc_dino_runner.utils.constants import (
+from componets.obstacles.text_utils import get_centered_message
+from utils.constants import (
     RUNNING,
     DUCKING,
     JUMPING,
@@ -56,7 +58,7 @@ class Dino(Sprite):
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
 
-    def update(self, user_input):
+    def update(self, user_input, joystick=None):
         if self.dino_jump:
             self.jump()
         if self.dino_duck:
@@ -64,12 +66,15 @@ class Dino(Sprite):
         if self.dino_run:
             self.run()
 
-        if user_input[pygame.K_DOWN] and not self.dino_jump:
+        jump_button = joystick.get_button(0) if joystick else False  
+        axis_y = joystick.get_axis(1) if joystick else 0  
+
+        if user_input[pygame.K_DOWN] or axis_y > 0.5 and not self.dino_jump:
             self.dino_duck = True
             self.dino_jump = False
             self.dino_run = False
             pygame.mixer.Sound.play(DUCK_SOUND)
-        elif user_input[pygame.K_UP] and not self.dino_jump:
+        elif user_input[pygame.K_UP] or jump_button or axis_y < -0.5 and not self.dino_jump:
             self.dino_jump = True
             self.dino_duck = False
             self.dino_run = False

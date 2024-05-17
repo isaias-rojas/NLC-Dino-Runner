@@ -1,5 +1,5 @@
 from pygame.sprite import Sprite
-from nlc_dino_runner.utils.constants import HEART
+from utils.constants import HEART
 
 
 class Hearts(Sprite):

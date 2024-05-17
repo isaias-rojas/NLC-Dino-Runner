@@ -1,7 +1,7 @@
 import random
 
 
-from nlc_dino_runner.utils.constants import SCREEN_WIDTH, CLOUD
+from utils.constants import SCREEN_WIDTH, CLOUD
 
 
 class Cloud:

@@ -1,7 +1,7 @@
 
 import random
 
-from nlc_dino_runner.componets.obstacles.obstacles import Obstacles
+from componets.obstacles.obstacles import Obstacles
 
 
 class Cactus(Obstacles):

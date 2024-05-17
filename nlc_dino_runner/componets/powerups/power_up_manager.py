@@ -1,11 +1,11 @@
 import random
 import pygame
-
-from nlc_dino_runner.componets.obstacles.text_utils import get_centered_message
-from nlc_dino_runner.componets.powerups.hammer import Hammer
-from nlc_dino_runner.componets.powerups.life import Life
-from nlc_dino_runner.componets.powerups.shield import Shield
-from nlc_dino_runner.utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE, POWER_UP_SOUND, HAMMER_SOUND, \
+import pygame.joystick
+from componets.obstacles.text_utils import get_centered_message
+from componets.powerups.hammer import Hammer
+from componets.powerups.life import Life
+from componets.powerups.shield import Shield
+from utils.constants import SHIELD_TYPE, DEFAULT_TYPE, HAMMER_TYPE, POWER_UP_SOUND, HAMMER_SOUND, \
     EXTRA_LIFE
 
 
@@ -36,7 +36,7 @@ class PowerUpManager:
                 if player.type == DEFAULT_TYPE:
                     self.power_ups.append(random.choice([Shield(), Hammer(), Life()]))
 
-    def update(self, points, game_speed, player, heart_manager):
+    def update(self, points, game_speed, player, heart_manager, joystick=None):
         self.generate_power_ups(points, player)
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)
@@ -69,8 +69,11 @@ class PowerUpManager:
 
         user_input = pygame.key.get_pressed()
 
+        attack_button = joystick.get_button(1) if joystick else False
+        another_button = joystick.get_button(2) if joystick else False
+
         if (user_input[
-            pygame.K_SPACE] and player.hammer) and (not self.throwing_hammer and self.hammer.hammer_counter > 0):
+            pygame.K_SPACE or attack_button or another_button] and player.hammer) and (not self.throwing_hammer and self.hammer.hammer_counter > 0):
             pygame.mixer.Sound.play(HAMMER_SOUND)
             self.throwing_hammer = True
             self.hammer.set_pos_hammer(player.dino_rect)

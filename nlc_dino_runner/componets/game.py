@@ -1,17 +1,18 @@
 import pygame
 
-from nlc_dino_runner.componets.dino import Dino
-from nlc_dino_runner.componets.hearts.hearts_manager import HeartsManager
-from nlc_dino_runner.componets.obstacles import text_utils
-from nlc_dino_runner.componets.obstacles.cloud import Cloud
-from nlc_dino_runner.componets.obstacles.obstaclesManager import ObstaclesManager
-from nlc_dino_runner.utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, FINAL_SCREEN
-from nlc_dino_runner.componets.powerups.power_up_manager import PowerUpManager
+from componets.dino import Dino
+from componets.hearts.hearts_manager import HeartsManager
+from componets.obstacles import text_utils
+from componets.obstacles.cloud import Cloud
+from componets.obstacles.obstaclesManager import ObstaclesManager
+from utils.constants import TITLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, FINAL_SCREEN
+from componets.powerups.power_up_manager import PowerUpManager
 
 WHITE_COLOR = (255, 255, 255)
 
 
 class Game:
+
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
@@ -32,7 +33,15 @@ class Game:
         self.running = True
         self.death_counts = 0
 
+        pygame.joystick.init()
+        self.joystick = None
+        if pygame.joystick.get_count() > 0:
+            self.joystick = pygame.joystick.Joystick(0)
+            self.joystick.init()
+
     def execute(self):
+        print("Game is running")
+        print("Joysticks: ", pygame.joystick.get_count())
         while self.running:
             if not self.playing:
                 self.show_menu()
@@ -80,10 +89,10 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
+        self.player.update(user_input, self.joystick)
         self.cloud.update(self)
-        self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points, self.game_speed, self.player, self.hearts_manager)
+        self.obstacle_manager.update(self, self.joystick)
+        self.power_up_manager.update(self.points, self.game_speed, self.player, self.hearts_manager, self.joystick)
 
     def draw(self):
         self.clock.tick(FPS)

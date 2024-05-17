@@ -1,5 +1,5 @@
-from nlc_dino_runner.componets.hearts.heart import Hearts
-from nlc_dino_runner.utils.constants import HEARTS_COUNTER
+from componets.hearts.heart import Hearts
+from utils.constants import HEARTS_COUNTER
 
 
 class HeartsManager:
