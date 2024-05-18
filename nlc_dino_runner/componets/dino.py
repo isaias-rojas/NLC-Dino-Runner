@@ -43,6 +43,7 @@ class Dino(Sprite):
         }
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.shield = False
         self.shield_time_up = 0
@@ -88,7 +89,9 @@ class Dino(Sprite):
             self.step_index = 0
 
     def run(self):
+        
         self.image = self.run_img[self.type][self.step_index // 5]
+        self.mask = pygame.mask.from_surface(self.image) 
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
@@ -96,6 +99,7 @@ class Dino(Sprite):
 
     def duck(self):
         self.image = self.duck_img[self.type][self.step_index // 5]
+        self.mask = pygame.mask.from_surface(self.image)
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS_DUCK
@@ -103,6 +107,7 @@ class Dino(Sprite):
 
     def jump(self):
         self.image = self.jump_img[self.type]
+        self.mask = pygame.mask.from_surface(self.image)  
         if self.dino_jump:
             self.dino_rect.y -= self.jump_vel * 5
             self.jump_vel -= 1

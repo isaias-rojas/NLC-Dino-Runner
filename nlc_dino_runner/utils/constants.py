@@ -2,6 +2,7 @@ import pygame
 import os
 
 pygame.mixer.init()
+
 # Global Constants
 TITLE = 'Dino Runner'
 SCREEN_HEIGHT = 600

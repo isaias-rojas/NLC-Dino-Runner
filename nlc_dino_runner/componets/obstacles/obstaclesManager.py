@@ -31,26 +31,26 @@ class ObstaclesManager:
                 self.obstacles_list.remove(obstacle)
                 print("y")
 
-            if game.player.dino_rect.colliderect(obstacle.rect):
-                if game.player.dino_rect.colliderect(obstacle.rect):
-                    if game.player.shield:
-                        pygame.mixer.Sound.play(COLLIDE_SOUND)
+            offset = (obstacle.rect.x - game.player.dino_rect.x, obstacle.rect.y - game.player.dino_rect.y)
+            if game.player.mask.overlap(obstacle.mask, offset):
+                if game.player.shield:
+                    pygame.mixer.Sound.play(COLLIDE_SOUND)
+                    self.obstacles_list.remove(obstacle)
+                else:
+                    pygame.mixer.Sound.play(LOST_LIFE)
+                    game.hearts_manager.hearts_counter -= 1
+
+                    if joystick:
+                        joystick.rumble(1.0, 1.0, 500)
+
+                    if game.hearts_manager.hearts_counter > 0:
                         self.obstacles_list.remove(obstacle)
                     else:
-                        pygame.mixer.Sound.play(LOST_LIFE)
-                        game.hearts_manager.hearts_counter -= 1
-
-                        if joystick:
-                            joystick.rumble(1.0, 1.0, 500)
-
-                        if game.hearts_manager.hearts_counter > 0:
-                            self.obstacles_list.remove(obstacle)
-                        else:
-                            pygame.time.delay(1000)
-                            pygame.mixer.Sound.play(GAME_OVER_SOUND)
-                            game.playing = False
-                            game.death_counts += 1
-                            break
+                        pygame.time.delay(1000)
+                        pygame.mixer.Sound.play(GAME_OVER_SOUND)
+                        game.playing = False
+                        game.death_counts += 1
+                        break
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:
